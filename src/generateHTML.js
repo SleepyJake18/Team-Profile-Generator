@@ -1,4 +1,5 @@
 const fs = require(`fs`);
+const { resolve } = require("path");
 
 function startHTML () {
     const HTML = `<!DOCTYPE html>
@@ -25,4 +26,67 @@ function startHTML () {
                 }
             });
             console.log("start");
-        };
+        }
+
+function generateCard(member) {
+    const name = member.getName();
+    const role = member.getRole();
+    const email = member.getEmail();
+    const id = member.getID();
+    let card = ``;
+    if(role === `Manager`) {
+        const office = member.getOfficeNumber();
+        card = `<div class="card col-6" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">${name}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">ID: ${id}</h6>
+            <p class="card-text">${role}</p>
+            <a href="#" class="card-text">Office Number: ${office}</a><p class="card-text"> Email:
+            <a href="mailto:${email}" class="card-link">${email}</a>
+        </div>
+    </div>`;
+    } else if (role === `Engineer`) {
+        const github = member.getGitHub();
+        card = `<div class="card col-6" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">${name}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">ID: ${id}</h6>
+            <p class="card-text">${role}</p>
+            <a href="https://github.com/${github}/" class="card-link">Office Number: ${github}</a><p class="card-text"> Email:
+            <a href="mailto:${email}" class="card-link">${email}</a>
+        </div>
+    </div>`
+    } else {
+        const school = member.getSchool();
+        card = `<div class="card col-6" style="width: 18rem;">
+        <div class="card-body">
+            <h5 class="card-title">${name}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">ID: ${id}</h6>
+            <p class="card-text">${role}</p>
+            <a href="#" class="card-text">${school}</a><p class="card-text"> Email:
+            <a href="mailto:${email}" class="card-link">${email}</a>
+        </div>
+    </div>`
+    }
+    fs.appendFile(`./dist/myteam.html`, card, function(err) {
+        if (err) {
+            console.log(err);
+        }
+    });
+    console.log("Member Added");
+}
+
+function endHTML() {
+    const finishHTML = `</div>
+    </main>
+</body>
+</html>`;
+fs.appendFile(`./dist/myteam.html`, finishHTML, function(err) {
+    if (err) {
+        console.log(err);
+    }
+});
+console.log(`Finished`);
+}
+
+module.exports = { startHTML, generateCard, endHTML};

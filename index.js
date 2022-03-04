@@ -3,7 +3,7 @@ const { Manager, Engineer, Intern } = require("./src/employeeClasses");
 const fs = (`fs`);
 const employeeClasses = require(`./src/employeesClasses`);
 const questions = require(`./src/questions`);
-
+const htmlfunctions = require(`./src/generateHTML`);
 const teamMembers = [];
 
 function addteamMember() {
@@ -16,9 +16,9 @@ function addteamMember() {
         } else {
             inquirer.prompt(internQuestion);
         }
-        inquirer.prompt(addMoreMembers)
+        
     })
-    .then(function({contact, moreMembers}){
+    .then(function({role}){
         let newEmployee;
         if (role === `Manager`) {
             newEmployee = new Manager(name, id, email, contact);
@@ -28,6 +28,16 @@ function addteamMember() {
             newEmployee = new Intern(name, id, email, contact);
         }
         teamMembers.push(newEmployee);
-        
+        inquirer.prompt(addMoreMembers)
+    })
+    .then(function({moreMembers}){
+        if (moreMembers === `Yes`) {
+            function addteamMember();
+        } else {
+            teamMembers.forEach(member => htmlfunctions.generateCard());
+        }
+    })
+    .then(function(){
+        htmlfunctions.endHTML();
     })
 }
