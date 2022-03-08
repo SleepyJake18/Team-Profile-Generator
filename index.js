@@ -1,43 +1,61 @@
 const inquirer = require(`inquirer`);
-const { Manager, Engineer, Intern } = require("./src/employeeClasses");
 const fs = (`fs`);
-const employeeClasses = require(`./src/employeesClasses`);
-const questions = require(`./src/questions`);
-const htmlfunctions = require(`./src/generateHTML`);
+const { Employee, Manager, Engineer, Intern } = require(`./src/employeeClasses`);
+const { generalQuestions, managerQuestion, engineerQuestion, internQuestion, addMoreMembers } = require(`./src/questions`);
+const { startHTML, generateCard, endHTML } = require(`./src/generateHTML`);
+
 const teamMembers = [];
 
-function addteamMember() {
+function init() {
+    startHTML();
+    addTeamMember();
+}
+
+async function addTeamMember() {
     inquirer.prompt(generalQuestions)
-    .then(function({name, id, role, email}){
-        if (role === `Manager`) {
-            inquirer.prompt(managerQuestion);
-        } else if (role === `Engineer`) {
-            inquirer.prompt(engineerQuestion);
-        } else {
-            inquirer.prompt(internQuestion);
-        }
-        
-    })
-    .then(function({role}){
-        let newEmployee;
-        if (role === `Manager`) {
-            newEmployee = new Manager(name, id, email, contact);
-        } else if (role === `Engineer`) {
-            newEmployee = new Engineer(name, id, email, contact);
-        } else {
-            newEmployee = new Intern(name, id, email, contact);
-        }
-        teamMembers.push(newEmployee);
-        inquirer.prompt(addMoreMembers)
-    })
-    .then(function({moreMembers}){
-        if (moreMembers === `Yes`) {
-            function addteamMember();
-        } else {
-            teamMembers.forEach(member => htmlfunctions.generateCard());
+    .then(async function(data){
+        if (data.role === `Manager`) {
+           const manager =  await inquirer.prompt(managerQuestion);
+            //await inquirer.prompt(addMoreMembers);
+           return await createMember({...data,...manager});
+        } else if (data.role === `Engineer`) {
+           const engineer = await  inquirer.prompt(engineerQuestion);
+           return await createMember({...data,...engineer});
+            //createMember(role);
+        } else if (data.role === `Intern`) {
+          const intern =  inquirer.prompt(internQuestion);
+          return await createMember({...data,...intern});
+            // createMember(role);
         }
     })
-    .then(function(){
-        htmlfunctions.endHTML();
+    .then(function(moreMembers){
+        possiblyContinue(moreMembers);
     })
 }
+
+
+function createMember(data){
+    let newEmployee;
+    console.log(data);
+    if (data.role === `Manager`) {
+        newEmployee = new Manager(data.name, data.id, data.email, data.contact)
+    } else if (data.role === `Engineer`) {
+        newEmployee = new Engineer(data.name, data.id, data.email, data.contact)
+    } else if (data.role === `Intern`) {
+        newEmployee = new Intern(data.name, data.id, data.email, data.contact)
+    }
+    generateCard(newEmployee)
+    teamMembers.push(newEmployee)
+    return inquirer.prompt(addMoreMembers)
+};
+
+function possiblyContinue(moreMembers) {
+    console.log(moreMembers);
+    if (moreMembers === 'Yes') {
+        return addTeamMember();
+    } else if (moreMembers === 'No') {
+        return endHTML();
+    }
+};
+
+init();

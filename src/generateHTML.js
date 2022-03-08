@@ -32,7 +32,7 @@ function generateCard(member) {
     const name = member.getName();
     const role = member.getRole();
     const email = member.getEmail();
-    const id = member.getID();
+    const id = member.getId();
     let card = ``;
     if(role === `Manager`) {
         const office = member.getOfficeNumber();
