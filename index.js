@@ -1,6 +1,9 @@
 const inquirer = require(`inquirer`);
 const fs = (`fs`);
-const { Employee, Manager, Engineer, Intern } = require(`./src/employeeClasses`);
+const Employee = require(`./lib/Employee`);
+const Engineer = require(`./lib/Engineer`);
+const Intern = require(`./lib/Intern`);
+const Manager = require(`./lib/Manager`);
 const { generalQuestions, managerQuestion, engineerQuestion, internQuestion, addMoreMembers } = require(`./src/questions`);
 const { startHTML, generateCard, endHTML } = require(`./src/generateHTML`);
 
@@ -23,7 +26,7 @@ async function addTeamMember() {
            return await createMember({...data,...engineer});
             //createMember(role);
         } else if (data.role === `Intern`) {
-          const intern =  inquirer.prompt(internQuestion);
+          const intern = await inquirer.prompt(internQuestion);
           return await createMember({...data,...intern});
             // createMember(role);
         }
@@ -49,7 +52,7 @@ function createMember(data){
     return inquirer.prompt(addMoreMembers)
 };
 
-function possiblyContinue(moreMembers) {
+function possiblyContinue({moreMembers}) {
     console.log(moreMembers);
     if (moreMembers === 'Yes') {
         return addTeamMember();

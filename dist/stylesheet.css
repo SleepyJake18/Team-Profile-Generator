@@ -1,0 +1,13 @@
+body {
+    background-color: lightslategray;
+}
+
+.customNav {
+    color: whitesmoke !important;
+    background-color: orangered !important;
+    font-size: 80px !important;
+}
+
+.backgroundBlue {
+    background-color: blue !important;
+}

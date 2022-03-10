@@ -8,18 +8,18 @@ function startHTML () {
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="stylesheet.css">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+        <link rel="stylesheet" href="stylesheet.css">
         <title>Team Members</title>
     </head>
     <body>
         <header>
-            <nav class="navbar navbar-light bg-light">
-                <span class="navbar-brand mb-0 h1">Navbar</span>
+            <nav class="navbar customNav justify-content-center">
+                <span class="mb-0 h1">My Team</span>
             </nav>
         </header>
         <main class = "container">
-            <div class = "row">`;
+            <div class = "row justify-content-center align-items-center">`;
             fs.writeFile(`./dist/myteam.html`, HTML, function(err) {
                 if (err) {
                     console.log(err);
@@ -36,35 +36,45 @@ function generateCard(member) {
     let card = ``;
     if(role === `Manager`) {
         const office = member.getOfficeNumber();
-        card = `<div class="card col-6" style="width: 18rem;">
+        card = `<div class="card col-4 my-3 mx-3" style="width: 18rem;">
         <div class="card-body">
-            <h5 class="card-title">${name}</h5>
+            <h5 class="card-title border-bottom border-dark">${name}</h5>
             <h6 class="card-subtitle mb-2 text-muted">ID: ${id}</h6>
             <p class="card-text">${role}</p>
-            <a href="#" class="card-text">Office Number: ${office}</a><p class="card-text"> Email:
+            <p class="card-text">Office Number: 
+            <a href="#" class="card-text">${office}</a>
+            </p>
+            <p class="card-text"> Email:
             <a href="mailto:${email}" class="card-link">${email}</a>
+            </p>
         </div>
     </div>`;
     } else if (role === `Engineer`) {
         const github = member.getGitHub();
-        card = `<div class="card col-6" style="width: 18rem;">
+        card = `<div class="card col-4 my-3 mx-3" style="width: 18rem;">
         <div class="card-body">
-            <h5 class="card-title">${name}</h5>
+            <h5 class="card-title border-bottom border-dark">${name}</h5>
             <h6 class="card-subtitle mb-2 text-muted">ID: ${id}</h6>
             <p class="card-text">${role}</p>
-            <a href="https://github.com/${github}/" class="card-link">Office Number: ${github}</a><p class="card-text"> Email:
+            <p class="card-text">GitHub: 
+            <a href="https://github.com/${github}/" class="card-link">${github}</a>
+            </p>
+            <p class="card-text">Email: 
             <a href="mailto:${email}" class="card-link">${email}</a>
+            </p>
         </div>
     </div>`
     } else {
         const school = member.getSchool();
-        card = `<div class="card col-6" style="width: 18rem;">
+        card = `<div class="card col-4 my-3 mx-3" style="width: 18rem;">
         <div class="card-body">
-            <h5 class="card-title">${name}</h5>
+            <h5 class="card-title border-bottom border-dark">${name}</h5>
             <h6 class="card-subtitle mb-2 text-muted">ID: ${id}</h6>
             <p class="card-text">${role}</p>
-            <a href="#" class="card-text">${school}</a><p class="card-text"> Email:
+            <p class="card-text">School: ${school}</p>
+            <p class="card-text"> Email:
             <a href="mailto:${email}" class="card-link">${email}</a>
+            </p>
         </div>
     </div>`
     }
